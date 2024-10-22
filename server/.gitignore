@@ -1,0 +1,26 @@
+# Node.js
+node_modules/   
+npm-debug.log* 
+yarn-error.log  
+.env           
+.DS_Store       
+
+uploads/        
+logs/           
+# Logs
+*.log
+
+# Test Coverage
+/coverage/
+
+# Editor directories and files
+.idea/         
+.vscode/        
+*.sublime*
+*.swp           
+
+Thumbs.db       
+Desktop.ini    
+
+# Temporary files
+*.tmp
