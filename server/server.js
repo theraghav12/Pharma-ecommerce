@@ -2,13 +2,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import userRoutes from './routes/userRoutes.js';
-import productRoutes from './routes/productRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import prescriptionRoutes from './routes/prescriptionRoutes.js';
-import cartRoutes from './routes/cartRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
-import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
+import userRoutes from './routes/user.js';
+import productRoutes from './routes/product.js';
+import orderRoutes from './routes/order.js';
+import prescriptionRoutes from './routes/prescription.js';
+import cartRoutes from './routes/cart.js';
+import paymentRoutes from './routes/payment.js';
+import { notFound, errorHandler } from './middleware/error.js';
 
 dotenv.config();
 

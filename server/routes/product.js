@@ -1,5 +1,5 @@
 import express from 'express';
-import productController from '../controllers/productController.js';
+import productController from '../controllers/product.js';
 import authMiddleware from '../middleware/auth.js';
 import adminMiddleware from '../middleware/admin.js';
 

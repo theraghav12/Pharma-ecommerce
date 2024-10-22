@@ -1,7 +1,7 @@
 import express from 'express';
-import prescriptionController from '../controllers/prescriptionController.js';
-import authMiddleware from '../middlewares/authMiddleware.js';
-import adminMiddleware from '../middlewares/adminMiddleware.js';
+import prescriptionController from '../controllers/prescription.js';
+import authMiddleware from '../middleware/auth.js';
+import adminMiddleware from '../middleware/admin.js';
 
 const router = express.Router();
 

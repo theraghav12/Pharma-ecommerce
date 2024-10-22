@@ -1,5 +1,5 @@
-import Payment from "../models/Payment.js";
-import Order from "../models/Order.js";
+import Payment from "../models/payment.js";
+import Order from "../models/order.js";
 
 const paymentController = {
   // Process payment

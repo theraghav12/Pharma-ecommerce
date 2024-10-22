@@ -1,5 +1,5 @@
-import User from "../models/User.js";
-import Product from "../models/Product.js";
+import User from "../models/user.js";
+import Product from "../models/product.js";
 
 const cartController = {
   // Add item to cart
