@@ -37,19 +37,19 @@ const connectDB = async () => {
 connectDB();
 
 // Routes (API Endpoints)
-app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/product', productRoutes);
+app.use('/api/order', orderRoutes);
+app.use('/api/prescription', prescriptionRoutes);
 app.use('/api/cart', cartRoutes);
-app.use('/api/payments', paymentRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Custom error handling middlewares
 app.use(notFound);         // Handle 404 errors
 app.use(errorHandler);     // Handle other errors
 
 // Set the server to listen on a port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
