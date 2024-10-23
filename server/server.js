@@ -49,7 +49,7 @@ app.use(notFound);         // Handle 404 errors
 app.use(errorHandler);     // Handle other errors
 
 // Set the server to listen on a port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
