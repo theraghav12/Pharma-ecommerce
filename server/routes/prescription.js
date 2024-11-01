@@ -5,10 +5,10 @@ import adminMiddleware from '../middleware/admin.js';
 
 const router = express.Router();
 
-router.post('/prescriptions/upload', authMiddleware, prescriptionController.uploadPrescription);
+router.post('/prescriptions/upload', prescriptionController.uploadPrescription);
 
-router.get('/prescriptions', authMiddleware, adminMiddleware, prescriptionController.getPrescriptionsForReview);
+router.get('/prescriptions',  prescriptionController.getPrescriptionsForReview);
 
-router.put('/prescriptions/:id/review', authMiddleware, adminMiddleware, prescriptionController.reviewPrescription);
+router.put('/prescriptions/:id/review',  prescriptionController.reviewPrescription);
 
 export default router;
