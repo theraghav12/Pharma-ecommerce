@@ -1,27 +1,23 @@
 import User from "../models/user.js";
-import bcrypt from "bcryptjs";  // For hashing passwords
-import jwt from "jsonwebtoken"; // For generating JWT tokens
+import bcrypt from "bcryptjs";  
+import jwt from "jsonwebtoken"; 
 
 const userController = {
-  // Register a new user
   registerUser: async (req, res) => {
     try {
       const { name, email, password, phone, address } = req.body;
-
-      // Check if user already exists
+  
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
       }
-
-      // Hash the password
+ 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Create a new user
       const newUser = new User({
         name,
         email,
-        password: hashedPassword, // Store hashed password
+        password: hashedPassword, 
         phone,
         address
       });

@@ -12,17 +12,16 @@ const authMiddleware = async (req, res, next) => {
 
     const token = authHeader.replace('Bearer ', '');
 
-    // Verify the token
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Find the user from the token payload
+    
     const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(401).json({ message: 'Authorization denied, user not found' });
     }
 
-    // Attach the user to the request object for further use
     req.user = user;
 
     next();
