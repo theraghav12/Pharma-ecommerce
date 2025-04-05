@@ -1,25 +1,69 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/users.js");
+// const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs"
+// const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken"
+// const User = require("../models/users.js");
+import User from "../models/users.js"
 
-exports.register = async (req, res) => {
+// export const register = async (req, res) => {
+//   try {
+//     const { name, email, password, role, specialization, age, gender, contact } = req.body;
+
+//     let user = await User.findOne({ email });
+//     if (user) return res.status(400).json({ message: "User already exists" });
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     user = new User({ name, email, password: hashedPassword, role, specialization, age, gender, contact });
+
+//     await user.save();
+//     res.status(201).json({ message: "User registered successfully" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
+
+
+export const register = async (req, res) => {
   try {
     const { name, email, password, role, specialization, age, gender, contact } = req.body;
 
+    // ✅ Basic validation
+    if (!name || !email || !password || !role || !contact) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // ✅ Role-based validation
+    if (role === "doctor" && !specialization) {
+      return res.status(400).json({ message: "Specialization is required for doctors" });
+    }
+
+    if (role === "patient" && (age === undefined || age === null)) {
+      return res.status(400).json({ message: "Age is required for patients" });
+    }
+
+    // ✅ Check if user already exists
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
+    // ✅ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // ✅ Create new user
     user = new User({ name, email, password: hashedPassword, role, specialization, age, gender, contact });
 
     await user.save();
-    res.status(201).json({ message: "User registered successfully" });
+
+    res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully` });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-exports.login = async (req, res) => {
+
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 

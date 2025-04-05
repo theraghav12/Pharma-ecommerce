@@ -1,7 +1,7 @@
-const PatientRecord = require("../models/PatientRecord");
+import PatientRecord from "../models/PatientRecord.js";
 
 // Create a new patient record
-exports.createPatientRecord = async (req, res) => {
+export const createPatientRecord = async (req, res) => {
   try {
     const { patientId, doctorId, diagnosis, notes } = req.body;
 
@@ -20,9 +20,10 @@ exports.createPatientRecord = async (req, res) => {
 };
 
 // Get all patient records (for doctors)
-exports.getPatientRecords = async (req, res) => {
+export const getPatientRecords = async (req, res) => {
   try {
     const records = await PatientRecord.find({ doctorId: req.user.id }).populate("patientId doctorId prescriptions");
+    // console.log(req.user);
     res.status(200).json(records);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
@@ -30,7 +31,7 @@ exports.getPatientRecords = async (req, res) => {
 };
 
 // Get a single patient record
-exports.getPatientRecordById = async (req, res) => {
+export const getPatientRecordById = async (req, res) => {
   try {
     const record = await PatientRecord.findById(req.params.id).populate("patientId doctorId prescriptions");
     if (!record) return res.status(404).json({ message: "Record not found" });
@@ -42,7 +43,7 @@ exports.getPatientRecordById = async (req, res) => {
 };
 
 // Update a patient record
-exports.updatePatientRecord = async (req, res) => {
+export const updatePatientRecord = async (req, res) => {
   try {
     const updatedRecord = await PatientRecord.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json({ message: "Patient record updated successfully", updatedRecord });
@@ -52,7 +53,7 @@ exports.updatePatientRecord = async (req, res) => {
 };
 
 // Delete a patient record
-exports.deletePatientRecord = async (req, res) => {
+export const deletePatientRecord = async (req, res) => {
   try {
     await PatientRecord.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Patient record deleted successfully" });
