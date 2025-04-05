@@ -1,7 +1,7 @@
-const Appointment = require("../models/Appointment");
+import Appointment from "../models/Appointment.js";
 
 // Create a new appointment
-exports.createAppointment = async (req, res) => {
+export const createAppointment = async (req, res) => {
   try {
     const { patientId, doctorId, date, time } = req.body;
 
@@ -20,7 +20,7 @@ exports.createAppointment = async (req, res) => {
 };
 
 // Get all appointments for a doctor
-exports.getAppointmentsByDoctor = async (req, res) => {
+export const getAppointmentsByDoctor = async (req, res) => {
   try {
     const appointments = await Appointment.find({ doctorId: req.user.id }).populate("patientId");
     res.status(200).json(appointments);
@@ -30,7 +30,7 @@ exports.getAppointmentsByDoctor = async (req, res) => {
 };
 
 // Get all appointments for a patient
-exports.getAppointmentsByPatient = async (req, res) => {
+export const getAppointmentsByPatient = async (req, res) => {
   try {
     const appointments = await Appointment.find({ patientId: req.user.id }).populate("doctorId");
     res.status(200).json(appointments);
@@ -40,7 +40,7 @@ exports.getAppointmentsByPatient = async (req, res) => {
 };
 
 // Cancel an appointment
-exports.cancelAppointment = async (req, res) => {
+export const cancelAppointment = async (req, res) => {
   try {
     await Appointment.findByIdAndUpdate(req.params.id, { status: "Cancelled" });
     res.status(200).json({ message: "Appointment cancelled successfully" });

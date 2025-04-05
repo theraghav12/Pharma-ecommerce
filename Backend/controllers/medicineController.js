@@ -1,7 +1,7 @@
-const Medicine = require("../models/Medicine");
+import Medicine from "../models/medicine.js";
 
-// ✅ Add a new medicine
-exports.addMedicine = async (req, res) => {
+// Add a new medicine
+export const addMedicine = async (req, res) => {
   try {
     const medicine = new Medicine(req.body);
     await medicine.save();
@@ -11,12 +11,14 @@ exports.addMedicine = async (req, res) => {
   }
 };
 
-// ✅ Get all medicines (with optional filtering)
-exports.getAllMedicines = async (req, res) => {
+// Get all medicines (with optional filtering)
+export const getAllMedicines = async (req, res) => {
   try {
     let query = {};
     if (req.query.category) query.category = req.query.category;
-    if (req.query.prescriptionRequired) query.prescriptionRequired = req.query.prescriptionRequired === "true";
+    if (req.query.prescriptionRequired) {
+      query.prescriptionRequired = req.query.prescriptionRequired === "true";
+    }
 
     const medicines = await Medicine.find(query);
     res.status(200).json(medicines);
@@ -25,8 +27,8 @@ exports.getAllMedicines = async (req, res) => {
   }
 };
 
-// ✅ Get a single medicine by ID
-exports.getMedicineById = async (req, res) => {
+// Get a single medicine by ID
+export const getMedicineById = async (req, res) => {
   try {
     const medicine = await Medicine.findById(req.params.id);
     if (!medicine) return res.status(404).json({ message: "Medicine not found" });
@@ -37,8 +39,8 @@ exports.getMedicineById = async (req, res) => {
   }
 };
 
-// ✅ Update a medicine
-exports.updateMedicine = async (req, res) => {
+// Update a medicine
+export const updateMedicine = async (req, res) => {
   try {
     const medicine = await Medicine.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!medicine) return res.status(404).json({ message: "Medicine not found" });
@@ -49,8 +51,8 @@ exports.updateMedicine = async (req, res) => {
   }
 };
 
-// ✅ Delete a medicine
-exports.deleteMedicine = async (req, res) => {
+// Delete a medicine
+export const deleteMedicine = async (req, res) => {
   try {
     const medicine = await Medicine.findByIdAndDelete(req.params.id);
     if (!medicine) return res.status(404).json({ message: "Medicine not found" });
@@ -61,13 +63,14 @@ exports.deleteMedicine = async (req, res) => {
   }
 };
 
-// ✅ Update stock quantity
-exports.updateStock = async (req, res) => {
+// Update stock quantity
+export const updateStock = async (req, res) => {
   try {
     const { quantity } = req.body;
     const medicine = await Medicine.findById(req.params.id);
-    
+
     if (!medicine) return res.status(404).json({ message: "Medicine not found" });
+
     if (quantity < 0 && medicine.stock.quantity < Math.abs(quantity)) {
       return res.status(400).json({ message: "Not enough stock available" });
     }
@@ -81,8 +84,8 @@ exports.updateStock = async (req, res) => {
   }
 };
 
-// ✅ Check if prescription is required
-exports.checkPrescription = async (req, res) => {
+// Check if prescription is required
+export const checkPrescription = async (req, res) => {
   try {
     const medicine = await Medicine.findById(req.params.id);
     if (!medicine) return res.status(404).json({ message: "Medicine not found" });

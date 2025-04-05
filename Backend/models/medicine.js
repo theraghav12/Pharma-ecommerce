@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const medicineSchema = new mongoose.Schema({
   productName: { type: String, required: true },
@@ -14,16 +14,16 @@ const medicineSchema = new mongoose.Schema({
     activeIngredients: [{ type: String, required: true }],
     inactiveIngredients: [{ type: String }],
   },
-  
+
   dosage: {
     form: { type: String, required: true }, // Tablet, Syrup, Injection, etc.
     strength: { type: String, required: true },
-    recommendedDosage: { type: String, required: true }
+    recommendedDosage: { type: String, required: true },
   },
 
   pricing: {
     mrp: { type: Number, required: true },
-    discount: { type: Number, default: 0 }, // Discount in percentage
+    discount: { type: Number, default: 0 },
     sellingPrice: { type: Number, required: true },
   },
 
@@ -31,13 +31,13 @@ const medicineSchema = new mongoose.Schema({
     available: { type: Boolean, default: true },
     quantity: { type: Number, required: true },
     minOrderQuantity: { type: Number, default: 1 },
-    maxOrderQuantity: { type: Number }
+    maxOrderQuantity: { type: Number },
   },
 
   packaging: {
     packSize: { type: String, required: true },
     expiryDate: { type: Date, required: true },
-    storageInstructions: { type: String, required: true }
+    storageInstructions: { type: String, required: true },
   },
 
   regulatory: {
@@ -45,16 +45,22 @@ const medicineSchema = new mongoose.Schema({
     sideEffects: [{ type: String }],
     warnings: [{ type: String }],
     contraindications: [{ type: String }],
-    interactions: [{ type: String }]
+    interactions: [{ type: String }],
   },
 
   additionalFeatures: {
     alternativeMedicines: [{ type: mongoose.Schema.Types.ObjectId, ref: "Medicine" }],
-    userReviews: [{ userId: mongoose.Schema.Types.ObjectId, review: String, rating: Number }],
+    userReviews: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        review: String,
+        rating: Number,
+      },
+    ],
     faqs: [{ question: String, answer: String }],
-    doctorAdvice: { type: String }
+    doctorAdvice: { type: String },
   },
-
 }, { timestamps: true });
 
-module.exports = mongoose.model("Medicine", medicineSchema);
+const Medicine = mongoose.model("Medicine", medicineSchema);
+export default Medicine;

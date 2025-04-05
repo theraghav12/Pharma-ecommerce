@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const patientRecordSchema = new mongoose.Schema({
   patientId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Links to Patient
@@ -9,4 +9,5 @@ const patientRecordSchema = new mongoose.Schema({
   prescriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Prescription" }] // Links to Prescriptions
 });
 
-module.exports = mongoose.model("PatientRecord", patientRecordSchema);
+const PatientRecord = mongoose.model("PatientRecord", patientRecordSchema);
+export default PatientRecord;

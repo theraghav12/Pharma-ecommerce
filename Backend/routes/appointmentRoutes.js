@@ -1,11 +1,11 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createAppointment,
   getAppointmentsByDoctor,
   getAppointmentsByPatient,
   cancelAppointment
-} = require("../controllers/appointmentController");
-const auth = require("../middleware/auth");
+} from "../controllers/appointmentController.js";
+import auth from "../middleware/auth.js"; // Don’t forget to import `auth` if it's used
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.get("/doctor", auth, getAppointmentsByDoctor); // Get all appointments fo
 router.get("/patient", auth, getAppointmentsByPatient); // Get all appointments for a patient
 router.put("/:id/cancel", auth, cancelAppointment); // Cancel appointment
 
-module.exports = router;
+export default router;
