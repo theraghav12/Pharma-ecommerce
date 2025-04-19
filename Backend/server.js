@@ -15,6 +15,7 @@ import appointmentRoutes from "./routes/appointmentRoutes.js"
 import medicineRoutes from "./routes/medicineRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
 import cartRoutes from "./routes/cartRoutes.js"
+import cors from "cors";
 
 dotenv.config();
 connectDB();
