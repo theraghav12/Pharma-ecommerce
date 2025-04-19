@@ -23,6 +23,12 @@ const app = express();
 
 app.use(express.json()); // Body parser
 
+// CORS configuration
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://your-frontend-domain.com'], // Replace with your real frontend URL
+    credentials: true,
+  }));
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patient-records", patientRecordRoutes);
