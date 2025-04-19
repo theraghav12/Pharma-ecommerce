@@ -1,21 +1,31 @@
-// const express = require("express");
-// const router = express.Router();
-// const orderController = require("../controllers/orderController");
-
-// router.post("/place", orderController.placeOrder);
-// router.get("/", orderController.getUserOrders);
-// router.put("/cancel/:id", orderController.cancelOrder);
-
-// module.exports = router;
-
 import express from "express";
-import * as orderController from "../controllers/orderController.js";
-import auth from "../middleware/auth.js"
+import {
+  placeOrder,
+  getOrders,
+  getOrdersByPatientId,
+  cancelOrder,
+  placeOrderByUserId,
+  placeOrderUsingCartId
+} from "../controllers/orderController.js";
+
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/place",auth ,orderController.placeOrder);
-router.get("/",auth ,orderController.getOrders);
-router.put("/cancel/:id",auth ,orderController.cancelOrder);
+// Place a new order
+router.post("/place", auth, placeOrder);
+
+// Get orders for logged-in user
+router.get("/", auth, getOrders);
+
+// ✅ Get orders by patient ID (admin or special access)
+router.get("/patient/:id", getOrdersByPatientId);
+
+// Cancel order
+router.post("/place-guest", placeOrderByUserId);
+
+router.put("/cancel/:id", auth, cancelOrder);
+
+router.post("/place-from-cart", placeOrderUsingCartId);
 
 export default router;

@@ -48,3 +48,20 @@ export const cancelAppointment = async (req, res) => {
     res.status(500).json({ message: "Server Error", error });
   }
 };
+
+export const getAppointmentsByUserId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const appointments = await Appointment.find({
+      $or: [{ doctorId: id }, { patientId: id }]
+    })
+    .populate("doctorId", "name email specialization")
+    .populate("patientId", "name email age");
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
