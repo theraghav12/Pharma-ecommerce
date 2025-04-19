@@ -25,11 +25,13 @@ const app = express();
 app.use(express.json()); // Body parser
 
 // CORS configuration
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://your-frontend-domain.com'], // Replace with your real frontend URL
-    credentials: true,
-  }));
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://your-production-frontend-url.com'], // Update with actual production URL
+    credentials: true, // Allow cookies if needed
+    methods: "GET, POST, PUT, DELETE", // Allow specific methods
+  };
 
+app.use(cors(corsOptions));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patient-records", patientRecordRoutes);
