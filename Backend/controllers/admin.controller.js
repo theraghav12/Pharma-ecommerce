@@ -43,7 +43,7 @@ export const loginAdmin = async (req, res) => {
       _id: admin._id,
       name: admin.name,
       email: admin.email,
-      adminToken: generateToken(admin._id),
+      adminToken: generateToken(admin._id,"admin"),
     });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
