@@ -29,6 +29,7 @@ app.use(express.json()); // Body parser
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://your-production-frontend-url.com'], // Update with actual production URL
     credentials: true, // Allow cookies if needed
+    allowedHeaders: ["Content-Type", "Authorization"],
     methods: "GET, POST, PUT, DELETE", // Allow specific methods
   };
 
