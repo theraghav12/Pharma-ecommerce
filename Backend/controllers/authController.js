@@ -5,25 +5,6 @@ import jwt from "jsonwebtoken"
 // const User = require("../models/users.js");
 import User from "../models/users.js"
 
-// export const register = async (req, res) => {
-//   try {
-//     const { name, email, password, role, specialization, age, gender, contact } = req.body;
-
-//     let user = await User.findOne({ email });
-//     if (user) return res.status(400).json({ message: "User already exists" });
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     user = new User({ name, email, password: hashedPassword, role, specialization, age, gender, contact });
-
-//     await user.save();
-//     res.status(201).json({ message: "User registered successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// };
-
-
 
 export const register = async (req, res) => {
   try {
