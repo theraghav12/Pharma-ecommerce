@@ -41,7 +41,7 @@ app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/medicines",medicineRoutes);
 app.use("/api/orders",orderRoutes);
-app.use("/api/carts",cartRoutes);
+app.use("/api/cart",cartRoutes);
 app.use("/api/admin",adminRoutes);
 
 

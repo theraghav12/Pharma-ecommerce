@@ -49,7 +49,7 @@ export const register = async (req, res) => {
         contact: user.contact,
         createdAt: user.createdAt
       }
-    });
+    }); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
