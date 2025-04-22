@@ -286,9 +286,7 @@ export const checkPrescription = async (req, res) => {
 export const getMedicinesForDashboard = async (req, res) => {
   try {
     const medicines = await Medicine.find({})
-      .select('productName brandName images pricing stock packaging')
-      .limit(10)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }); // fetch all, sorted by most recent
 
     res.status(200).json(medicines);
   } catch (error) {
