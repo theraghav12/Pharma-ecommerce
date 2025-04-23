@@ -25,6 +25,8 @@ const app = express();
 
 app.use(express.json()); // Body parser
 
+app.use(express.urlencoded({ extended: true }));
+
 // CORS configuration
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://your-production-frontend-url.com'], // Update with actual production URL

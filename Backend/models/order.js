@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
     {
       medicineId: { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true },
       quantity: { type: Number, required: true },
-      price: { type: Number, required: true }, // Snapshot of price at purchase time
+      price: { type: Number, required: true },
     },
   ],
   totalAmount: { type: Number, required: true },
@@ -25,6 +25,7 @@ const orderSchema = new mongoose.Schema({
   orderedAt: { type: Date, default: Date.now },
   deliveredAt: { type: Date },
 });
+
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;

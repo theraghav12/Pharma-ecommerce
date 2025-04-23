@@ -3,51 +3,137 @@ import Cart from "../models/cart.js";
 import Medicine from "../models/medicine.js";
 
 // Place an order
+// export const placeOrder = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { address, contact } = req.body;
+
+//     let cart = await Cart.findOne({ userId });
+//     if (!cart || cart.items.length === 0) {
+//       return res.status(400).json({ message: "Cart is empty" });
+//     }
+
+//     // Check stock availability
+//     for (let item of cart.items) {
+//       const medicine = await Medicine.findById(item.medicineId);
+//       if (medicine.stock.quantity < item.quantity) {
+//         return res.status(400).json({ message: `Not enough stock for ${medicine.productName}` });
+//       }
+//     }
+
+//     // Reduce stock
+//     for (let item of cart.items) {
+//       await Medicine.findByIdAndUpdate(item.medicineId, {
+//         $inc: { "stock.quantity": -item.quantity }
+//       });
+//     }
+
+//     const newOrder = new Order({
+//       userId,
+//       items: cart.items,
+//       totalAmount: cart.totalPrice,
+//       status: "Pending",
+//       paymentStatus: "Pending",
+//       address,
+//       contact
+//     });
+
+//     await newOrder.save();
+
+//     // Clear cart after placing order
+//     await Cart.findOneAndDelete({ userId });
+
+//     res.status(201).json({ message: "Order placed successfully", order: newOrder });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// };
+
 export const placeOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { address, contact } = req.body;
+    console.log("Incoming order data:", req.body);
 
+    const userId = req.user ? req.user.id : null;
+    if (!userId) {
+      return res.status(400).json({ message: "User must be logged in to place an order." });
+    }
+
+    const { address, contact, cartItems } = req.body;
+
+    // Fetch or construct cart
     let cart = await Cart.findOne({ userId });
+    if ((!cart || cart.items.length === 0) && cartItems && cartItems.length > 0) {
+      cart = {
+        items: cartItems,
+        totalPrice: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      };
+    }
+
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    // Check stock availability
-    for (let item of cart.items) {
+    // Stock check and get medicine details
+    const itemsWithDetails = await Promise.all(cart.items.map(async (item) => {
       const medicine = await Medicine.findById(item.medicineId);
-      if (medicine.stock.quantity < item.quantity) {
-        return res.status(400).json({ message: `Not enough stock for ${medicine.productName}` });
+      if (!medicine || medicine.stock.quantity < item.quantity) {
+        throw new Error(`Not enough stock for ${medicine?.productName || "Unknown"}`);
       }
-    }
+      return {
+        medicineId: medicine._id,
+        medicineDetails: { // Include full medicine details
+          _id: medicine._id,
+          productName: medicine.productName,
+          price: medicine.pricing.sellingPrice,
+          // Add other fields you want to display
+        },
+        quantity: item.quantity,
+        price: medicine.pricing.sellingPrice
+      };
+    }));
 
-    // Reduce stock
-    for (let item of cart.items) {
-      await Medicine.findByIdAndUpdate(item.medicineId, {
+    // Deduct stock
+    await Promise.all(itemsWithDetails.map(item => 
+      Medicine.findByIdAndUpdate(item.medicineId, {
         $inc: { "stock.quantity": -item.quantity }
-      });
-    }
+      })
+    ));
 
+    // Create order with enriched items
     const newOrder = new Order({
       userId,
-      items: cart.items,
-      totalAmount: cart.totalPrice,
-      status: "Pending",
+      items: itemsWithDetails,
+      totalAmount: cart.totalPrice + 50, // fixed delivery fee
+      status: "Processing",
       paymentStatus: "Pending",
       address,
-      contact
+      contact,
+      customerEmail: req.user.email,
+      customerName: req.user.name
     });
 
     await newOrder.save();
 
-    // Clear cart after placing order
+    // Clear cart if user is logged in
     await Cart.findOneAndDelete({ userId });
 
-    res.status(201).json({ message: "Order placed successfully", order: newOrder });
+    // Populate the response with medicine details
+    const populatedOrder = await Order.findById(newOrder._id)
+      .populate('items.medicineId', 'productName pricing.sellingPrice');
+
+    res.status(201).json({ 
+      message: "Order placed successfully", 
+      order: populatedOrder 
+    });
+
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error placing order:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+
 
 // Get all orders for a user
 export const getOrders = async (req, res) => {
