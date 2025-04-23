@@ -25,6 +25,8 @@ const app = express();
 
 app.use(express.json()); // Body parser
 
+app.use(express.urlencoded({ extended: true }));
+
 // CORS configuration
 const corsOptions = {
     origin: ['http://localhost:3000', 'https://your-production-frontend-url.com'], // Update with actual production URL
@@ -41,7 +43,7 @@ app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/medicines",medicineRoutes);
 app.use("/api/orders",orderRoutes);
-app.use("/api/carts",cartRoutes);
+app.use("/api/cart",cartRoutes);
 app.use("/api/admin",adminRoutes);
 
 

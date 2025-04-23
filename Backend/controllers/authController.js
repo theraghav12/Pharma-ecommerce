@@ -36,6 +36,9 @@ export const register = async (req, res) => {
 
     await user.save();
 
+     // ✅ Generate token
+     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "30h" });
+
     res.status(201).json({ 
       message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully`,
       token,
@@ -49,7 +52,7 @@ export const register = async (req, res) => {
         contact: user.contact,
         createdAt: user.createdAt
       }
-    });
+    }); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -67,7 +70,7 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid Credentials" });
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "30h" });
 
     res.json({ token, user });
   } catch (error) {
