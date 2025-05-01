@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://arogya-rx.vercel.app', 'https://arogyarx.com'], // Update with actual production URL
+    origin: ['http://localhost:3000','http://localhost:5000', 'https://arogya-rx.vercel.app', 'https://arogyarx.com'], // Update with actual production URL
     credentials: true, // Allow cookies if needed
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: "GET, POST, PUT, DELETE", // Allow specific methods
