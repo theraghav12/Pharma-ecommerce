@@ -18,5 +18,11 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Update updatedAt timestamp
+userSchema.pre('save', function(next) {
+  this.updatedAt = new Date();
+  next();
+})
+
 const User = mongoose.model("User", userSchema);
 export default User;

@@ -16,7 +16,9 @@ import medicineRoutes from "./routes/medicineRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
 import cartRoutes from "./routes/cartRoutes.js"
 import adminRoutes from "./routes/admin.routes.js"
+import profileRoutes from "./routes/profile.js"
 import cors from "cors";
+
 
 dotenv.config();
 connectDB();
@@ -45,6 +47,7 @@ app.use("/api/medicines",medicineRoutes);
 app.use("/api/orders",orderRoutes);
 app.use("/api/cart",cartRoutes);
 app.use("/api/admin",adminRoutes);
+app.use("/api/profile",profileRoutes);
 
 
 
