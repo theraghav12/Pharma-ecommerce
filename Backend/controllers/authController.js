@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 // const User = require("../models/users.js");
 import User from "../models/users.js"
+import Profile from "../models/profile.js"
 
 
 export const register = async (req, res) => {
@@ -33,6 +34,10 @@ export const register = async (req, res) => {
 
     // ✅ Create new user
     user = new User({ name, email, password: hashedPassword, role, specialization, age, gender, contact });
+
+    // ✅ Create empty profile for the user
+    const profile = new Profile({ user: user._id });
+    await profile.save();
 
     await user.save();
 
