@@ -2,46 +2,46 @@ import mongoose from "mongoose";
 
 const medicineSchema = new mongoose.Schema({
   productName: { type: String, required: true },
-  genericName: { type: String, required: true },
-  brandName: { type: String, required: true },
-  manufacturer: { type: String, required: true },
+  genericName: { type: String },
+  brandName: { type: String },
+  manufacturer: { type: String },
   images: [{ type: String }], // Array of image URLs
-  description: { type: String, required: true },
-  category: { type: String, enum: ["OTC", "Prescription", "Ayurvedic", "Homeopathic"], required: true },
-  prescriptionRequired: { type: Boolean, required: true },
+  description: { type: String },
+  category: { type: String, enum: ["OTC", "Prescription", "Ayurvedic", "Homeopathic"] },
+  prescriptionRequired: { type: Boolean },
 
   composition: {
-    activeIngredients: [{ type: String, required: true }],
+    activeIngredients: [{ type: String }],
     inactiveIngredients: [{ type: String }],
   },
 
   dosage: {
-    form: { type: String, required: true }, // Tablet, Syrup, Injection, etc.
-    strength: { type: String, required: true },
-    recommendedDosage: { type: String, required: true },
+    form: { type: String }, // Tablet, Syrup, Injection, etc.
+    strength: { type: String },
+    recommendedDosage: { type: String },
   },
 
   pricing: {
-    mrp: { type: Number, required: true },
+    mrp: { type: Number },
     discount: { type: Number, default: 0 },
-    sellingPrice: { type: Number, required: true },
+    sellingPrice: { type: Number },
   },
 
   stock: {
     available: { type: Boolean, default: true },
-    quantity: { type: Number, required: true },
+    quantity: { type: Number },
     minOrderQuantity: { type: Number, default: 1 },
     maxOrderQuantity: { type: Number },
   },
 
   packaging: {
-    packSize: { type: String, required: true },
-    expiryDate: { type: Date, required: true },
-    storageInstructions: { type: String, required: true },
+    packSize: { type: String },
+    expiryDate: { type: Date },
+    storageInstructions: { type: String },
   },
 
   regulatory: {
-    drugType: { type: String, required: true },
+    drugType: { type: String },
     sideEffects: [{ type: String }],
     warnings: [{ type: String }],
     contraindications: [{ type: String }],

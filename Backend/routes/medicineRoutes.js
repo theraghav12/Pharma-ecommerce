@@ -2,17 +2,27 @@ import express from "express";
 import * as medicineController from "../controllers/medicineController.js";
 import adminAuth from "../middleware/AdminAuth.js";
 import { uploadMedicineImages } from "../middleware/upload.js";
-import { getMedicinesForDashboard } from "../controllers/medicineController.js";
+import { 
+  addMedicine, 
+  getAllMedicines, 
+  getMedicineById, 
+  updateMedicine, 
+  deleteMedicine, 
+  updateStock, 
+  bulkUploadMedicines, 
+  getMedicinesForDashboard 
+} from '../controllers/medicineController.js';
 
 const router = express.Router();
 
-router.post("/add", uploadMedicineImages, medicineController.addMedicine);
-router.get("/", medicineController.getAllMedicines);
+router.post("/add", uploadMedicineImages, addMedicine);
+router.post('/bulk-upload', bulkUploadMedicines);
+router.get("/", getAllMedicines);
 router.get('/dashboard',getMedicinesForDashboard);
-router.get("/:id", medicineController.getMedicineById);
-router.put("/:id",  uploadMedicineImages, medicineController.updateMedicine);
-router.delete("/:id",  medicineController.deleteMedicine);
-router.patch("/stock/:id",  medicineController.updateStock);
+router.get("/:id", getMedicineById);
+router.put("/:id",  uploadMedicineImages, updateMedicine);
+router.delete("/:id",  deleteMedicine);
+router.patch("/stock/:id",  updateStock);
 // Add to your medicine routes
 
 router.get("/check-prescription/:id", medicineController.checkPrescription);
