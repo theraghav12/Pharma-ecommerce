@@ -18,6 +18,7 @@ import cartRoutes from "./routes/cartRoutes.js"
 import adminRoutes from "./routes/admin.routes.js"
 import profileRoutes from "./routes/profile.js"
 import labTestRoutes from "./routes/labTestRoutes.js"
+import uploadRoutes from "./routes/uploadRoutes.js"
 import cors from "cors";
 
 
@@ -44,7 +45,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/patient-records", patientRecordRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/appointments", appointmentRoutes);
-app.use("/api/medicines",medicineRoutes);
+app.use("/api/medicines", medicineRoutes);
+app.use("/api/upload", uploadRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
