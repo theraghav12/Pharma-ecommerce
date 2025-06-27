@@ -19,6 +19,9 @@ import adminRoutes from "./routes/admin.routes.js"
 import profileRoutes from "./routes/profile.js"
 import labTestRoutes from "./routes/labTestRoutes.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
+
+
+
 import cors from "cors";
 
 
@@ -52,6 +55,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/lab-tests", labTestRoutes);
+
 
 
 
