@@ -2,52 +2,6 @@ import Order from "../models/order.js";
 import Cart from "../models/cart.js";
 import Medicine from "../models/medicine.js";
 
-// Place an order
-// export const placeOrder = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const { address, contact } = req.body;
-
-//     let cart = await Cart.findOne({ userId });
-//     if (!cart || cart.items.length === 0) {
-//       return res.status(400).json({ message: "Cart is empty" });
-//     }
-
-//     // Check stock availability
-//     for (let item of cart.items) {
-//       const medicine = await Medicine.findById(item.medicineId);
-//       if (medicine.stock.quantity < item.quantity) {
-//         return res.status(400).json({ message: `Not enough stock for ${medicine.productName}` });
-//       }
-//     }
-
-//     // Reduce stock
-//     for (let item of cart.items) {
-//       await Medicine.findByIdAndUpdate(item.medicineId, {
-//         $inc: { "stock.quantity": -item.quantity }
-//       });
-//     }
-
-//     const newOrder = new Order({
-//       userId,
-//       items: cart.items,
-//       totalAmount: cart.totalPrice,
-//       status: "Pending",
-//       paymentStatus: "Pending",
-//       address,
-//       contact
-//     });
-
-//     await newOrder.save();
-
-//     // Clear cart after placing order
-//     await Cart.findOneAndDelete({ userId });
-
-//     res.status(201).json({ message: "Order placed successfully", order: newOrder });
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error", error });
-//   }
-// };
 
 export const placeOrder = async (req, res) => {
   try {
@@ -99,6 +53,18 @@ export const placeOrder = async (req, res) => {
       })
     ));
 
+    // Format address as a single string
+    const formatAddress = (addr) => {
+      if (typeof addr === 'string') return addr; // If it's already a string
+      return [
+        addr.street || '',
+        addr.city || '',
+        addr.state || '',
+        addr.postalCode || '',
+        addr.country || 'India'
+      ].filter(Boolean).join(', ');
+    };
+
     // Create order with enriched items
     const newOrder = new Order({
       userId,
@@ -106,7 +72,7 @@ export const placeOrder = async (req, res) => {
       totalAmount: cart.totalPrice + 50, // fixed delivery fee
       status: "Processing",
       paymentStatus: "Pending",
-      address,
+      address: formatAddress(address),
       contact,
       customerEmail: req.user.email,
       customerName: req.user.name
@@ -199,6 +165,18 @@ export const placeOrderByUserId = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields or cart is empty" });
     }
 
+    // Format address as a single string
+    const formatAddress = (addr) => {
+      if (typeof addr === 'string') return addr; // If it's already a string
+      return [
+        addr.street || '',
+        addr.city || '',
+        addr.state || '',
+        addr.postalCode || '',
+        addr.country || 'India'
+      ].filter(Boolean).join(', ');
+    };
+
     let totalAmount = 0;
     const finalItems = [];
 
@@ -231,7 +209,7 @@ export const placeOrderByUserId = async (req, res) => {
       totalAmount,
       status: "Pending",
       paymentStatus: "Pending",
-      address,
+      address: formatAddress(address),
       contact
     });
 
@@ -251,6 +229,18 @@ export const placeOrderUsingCartId = async (req, res) => {
     if (!cartId || !address || !contact) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+
+    // Format address as a single string
+    const formatAddress = (addr) => {
+      if (typeof addr === 'string') return addr; // If it's already a string
+      return [
+        addr.street || '',
+        addr.city || '',
+        addr.state || '',
+        addr.postalCode || '',
+        addr.country || 'India'
+      ].filter(Boolean).join(', ');
+    };
 
     const cart = await Cart.findById(cartId);
     if (!cart || cart.items.length === 0) {
@@ -290,7 +280,7 @@ export const placeOrderUsingCartId = async (req, res) => {
       totalAmount,
       status: "Pending",
       paymentStatus: "Pending",
-      address,
+      address: formatAddress(address),
       contact
     });
 

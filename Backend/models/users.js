@@ -15,14 +15,22 @@ const userSchema = new mongoose.Schema({
   },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   contact: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  address: {
+    street: { type: String, default: '' },
+    city: { type: String, default: '' },
+    state: { type: String, default: '' },
+    postalCode: { type: String, default: '' },
+    country: { type: String, default: 'India' }
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date } // Added for the pre-save hook
 });
 
 // Update updatedAt timestamp
 userSchema.pre('save', function(next) {
   this.updatedAt = new Date();
   next();
-})
+});
 
 const User = mongoose.model("User", userSchema);
 export default User;
