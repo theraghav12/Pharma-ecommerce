@@ -4,19 +4,27 @@ const profileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    unique: true
   },
   firstName: {
     type: String,
-    trim: true
+    trim: true,
+    maxlength: 50
   },
   lastName: {
     type: String,
-    trim: true
+    trim: true,
+    maxlength: 50
   },
   dob: { 
     type: Date,
-    message: 'Date of birth is required'
+    validate: {
+      validator: function(dob) {
+        return !dob || dob < new Date();
+      },
+      message: 'Date of birth must be in the past'
+    }
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
