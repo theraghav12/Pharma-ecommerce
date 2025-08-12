@@ -44,7 +44,7 @@ export const register = async (req, res) => {
     }
 
     // Check for existing user
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or:[{contact},{email}] });
     if (existingUser) {
       return res.status(409).json({ message: "User already exists" });
     }
@@ -74,18 +74,17 @@ export const register = async (req, res) => {
     await profile.save();
 
     // Generate JWT token
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "30h" }
-    );
+    // const token = jwt.sign(
+    //   { id: user._id, role: user.role },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "1m" }
+    // );
 
     // Format response
     const responseUser = formatUserResponse(user);
 
     res.status(201).json({
       message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully`,
-      token,
       user: responseUser
     });
 
@@ -119,7 +118,7 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "30h" }
+      { expiresIn: "10d" }
     );
 
     const responseUser = formatUserResponse(user);

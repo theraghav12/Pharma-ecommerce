@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     required: function () { return this.role === "patient"; } 
   },
   gender: { type: String, enum: ["Male", "Female", "Other"] },
-  contact: { type: String, required: true },
+  contact: { type: String, required: true,unique:true },
   address: {
     street: { type: String, default: '' },
     city: { type: String, default: '' },
