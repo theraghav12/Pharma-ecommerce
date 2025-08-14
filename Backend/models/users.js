@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: function () { return this.role === "doctor"; } 
   },
+  qualification: { 
+    type: String, 
+    required: function () { return this.role === "doctor"; } 
+  },
   age: { 
     type: Number, 
     required: function () { return this.role === "patient"; } 
