@@ -13,8 +13,12 @@ import {
   getMedicinesForDashboard 
 } from '../controllers/medicineController.js';
 import { getMedicinesWithoutImages, getSuggestedImage, approveImage } from '../controllers/imageSuggestionController.js';
+import { autofillAndUpdateMedicine } from '../controllers/aiAutofillController.js';
 
 const router = express.Router();
+
+// AI Autofill route - Must be before the /:id route to avoid conflict
+router.post('/:id/autofill', adminAuth, autofillAndUpdateMedicine);
 
 router.post("/add", uploadMedicineImages, addMedicine);
 router.post('/bulk-upload', bulkUploadMedicines);
@@ -24,7 +28,7 @@ router.get('/suggest-image', getSuggestedImage);
 router.put('/:id/add-image', approveImage);
 router.get('/dashboard',getMedicinesForDashboard);
 router.get("/:id", getMedicineById);
-router.put("/:id",  uploadMedicineImages, updateMedicine);
+router.put("/:id", adminAuth, uploadMedicineImages, updateMedicine);
 router.delete("/:id",  deleteMedicine);
 router.patch("/stock/:id",  updateStock);
 // Add to your medicine routes

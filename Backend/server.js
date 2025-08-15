@@ -19,8 +19,8 @@ import adminRoutes from "./routes/admin.routes.js"
 import profileRoutes from "./routes/profile.js"
 import labTestRoutes from "./routes/labTestRoutes.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
-
-
+import aiAutofillRoutes from "./routes/aiAutofillRoutes.js"
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js"
 
 import cors from "cors";
 
@@ -50,14 +50,15 @@ app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/medicines", medicineRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/ai", aiAutofillRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/lab-tests", labTestRoutes);
 
-
-
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
