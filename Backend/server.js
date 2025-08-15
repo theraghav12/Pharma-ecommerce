@@ -20,6 +20,7 @@ import profileRoutes from "./routes/profile.js"
 import labTestRoutes from "./routes/labTestRoutes.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
 import aiAutofillRoutes from "./routes/aiAutofillRoutes.js"
+import adminBannerRoutes from "./routes/adminBannerRoutes.js"
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js"
 
 import cors from "cors";
@@ -56,6 +57,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/lab-tests", labTestRoutes);
+app.use("/api/banner", adminBannerRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
